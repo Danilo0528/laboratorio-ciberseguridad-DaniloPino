@@ -1,12 +1,11 @@
 FROM python:alpine
 
-# Instalamos Flask y Requests para construir el proxy interceptor
-RUN pip install --no-cache-dir flask requests
+# Forzar a Python a volcar todos los prints a la consola sin esperar
+ENV PYTHONUNBUFFERED=1
 
 WORKDIR /app
-
 COPY app.py /app/app.py
 
-EXPOSE 8080
+RUN pip install --no-cache-dir flask requests
 
 CMD ["python", "app.py"]
