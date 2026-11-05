@@ -13,7 +13,7 @@ def mitm_proxy(path):
     print(f"[CABECERAS INTERCEPTADAS] {dict(request.headers)}")
     
     # Reenvío de la petición hacia la DMZ
-    url = f"{TARGET_DMZ}/{path}"
+    url = f"{TARGET_DMZ}/{path}" if path else f"{TARGET_DMZ}/"
     try:
         resp = requests.get(url, timeout=5)
         contenido_original = resp.text
