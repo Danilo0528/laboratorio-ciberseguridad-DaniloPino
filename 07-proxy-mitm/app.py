@@ -4,7 +4,7 @@ import requests
 app = Flask(__name__)
 
 # Servidor objetivo en la DMZ
-TARGET_DMZ = "https://servidor-web-dmz-ebl.onrender.com"
+TARGET_DMZ = "https://servidor-web-dmz-ebl.onrender.com/"
 
 @app.route('/', defaults={'path': ''}, methods=['GET', 'POST'])
 @app.route('/<path:path>', methods=['GET', 'POST'])
