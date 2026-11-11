@@ -83,29 +83,80 @@ Son **8 pestañas distintas**, una por servicio:
 ## 🎥 PASO 2 — Grabar el video (máx. 7 minutos)
 
 **Herramienta:** OBS Studio (gratis) o `Win + G` (Xbox Game Bar).
-**Antes de grabar:** recorre los 8 servicios una vez para **despertarlos** (el plan Free duerme los servicios y la primera carga tarda 30–60 s).
+**Antes de grabar:**
+- Recorre los 8 servicios una vez para **despertarlos** (el plan Free duerme los servicios y la primera carga tarda 30–60 s).
+- **Ctrl + `+`** dos veces en el navegador: URLs y logs **se tienen que leer** en el video.
+- Abre de antemano las pestañas: GitHub, Dashboard de Render, DMZ, y los 8 servicios.
 
-| # | Tiempo | Qué muestras en pantalla | Qué dices (o texto en pantalla) |
-|---|---|---|---|
-| 1 | 0:00–0:35 | GitHub → repo `laboratorio-ciberseguridad-DaniloPino` → 8 carpetas | *"Laboratorio de ciberseguridad de Danilo Pino, con los 8 módulos."* |
-| 2 | 0:35–1:15 | Dashboard de Render → los 8 servicios en verde | *"Los 8 servicios desplegados en Render, todos con mis iniciales."* |
-| 3 | 1:15–2:00 | Abres la DMZ y haces zoom (Ctrl +) al título | *"Servidor víctima DMZ activo, con mi nombre personalizado."* |
-| 4 | 2:00–2:45 | Logs del **00** → filtro Application | *"Los registros del servidor muestran el tráfico recibido."* |
-| 5 | 2:45–3:15 | Logs del **01** | *"Módulo 01: ráfaga de tráfico masivo (DoS)."* |
-| 6 | 3:15–3:45 | Logs del **02** | *"Módulo 02: escaneo de puertos — 443 y 80 abiertos, el resto filtrados."* |
-| 7 | 3:45–4:15 | Logs del **03** | *"Módulo 03: enumeración de rutas sensibles."* |
-| 8 | 4:15–4:45 | Logs del **04** | *"Módulo 04: exfiltración de datos por consultas DNS."* |
-| 9 | 4:45–5:10 | Logs del **05** | *"Módulo 05: dependencia maliciosa en la cadena de suministro."* |
-| 10 | 5:10–5:35 | Logs del **06** | *"Módulo 06: credential stuffing sobre el servidor."* |
-| 11 | 5:35–6:30 | Abres la URL del **07** → `Ctrl + F` → buscas `ALERTA MITM` | *"Módulo 07: proxy man-in-the-middle que intercepta e inyecta código en la respuesta."* |
-| 12 | 6:30–7:00 | Dashboard con las 8 en verde + el PDF | *"Laboratorio completo en la nube. Adjunto el PDF con los logs."* |
+---
 
-**Reglas de grabación:**
+### 🎬 GUION COMPLETO — lo que dices en cada escena
+
+*(Son ~700 palabras: hablando tranquilo queda en 6 minutos con pausas. No memorices: lee mientras haces los clics.)*
+
+**▶ ESCENA 1 · 0:00–0:35 — El repositorio** *(muestra: GitHub, las 8 carpetas)*
+
+> "Buenas, soy Danilo Pino. Este es mi repositorio **laboratorio-ciberseguridad-DaniloPino**, en GitHub, de acceso público. Tiene los ocho módulos del laboratorio: el cero, el servidor víctima en la DMZ, y del uno al siete los módulos atacantes: ataque de denegación de servicio, escaneo de puertos, fuerza bruta de rutas, exfiltración por DNS, manipulación de la cadena de suministro, credential stuffing y proxy man-in-the-middle. Cada módulo trae su `entrypoint.sh` o `app.py` y su `Dockerfile`."
+
+**▶ ESCENA 2 · 0:35–1:15 — Dashboard de Render** *(muestra: Render, los 8 servicios en verde)*
+
+> "Ahora en Render están los ocho servicios desplegados, todos **Live**. Fíjense en los nombres: `servidor-web-dmz-dpino`, `modulo-01-dos-dpino`, y así hasta el siete. **Todos llevan mis iniciales**, que es lo que exige la actividad para comprobar que yo los creé. Se conectaron al mismo repositorio de GitHub con Runtime Docker y Root Directory por carpeta."
+
+**▶ ESCENA 3 · 1:15–2:00 — La DMZ con tu nombre** *(muestra: URL de la DMZ, zoom al título)*
+
+> "Este es el servidor víctima, la DMZ, en `servidor-web-dmz-dpino.onrender.com`. Está en la **zona desmilitarizada**, o sea, expuesto en la nube, y es el objetivo de todos los demás módulos. Aquí se ve mi nombre: **'Servidor DMZ Activo - Laboratorio de Danilo Pino'**, que es el mensaje personalizado que pide la actividad. Este nodo va a recibir todos los ataques que vienen ahora."
+
+**▶ ESCENA 4 · 2:00–2:45 — Logs del 00 (la víctima)** *(muestra: Logs del 00, filtro Application)*
+
+> "Vamos a los registros de auditoría del servidor víctima. Con el filtro **Application** se ve el tráfico real: aquí están las peticiones **GET** con respuesta **200** que le llegan a la DMZ. Esto es lo que demuestra el objetivo de la actividad: **cómo se refleja el ataque en los logs**. La víctima no sabe quién la ataca, pero sí registra todo lo que recibe."
+
+**▶ ESCENA 5 · 2:45–3:15 — Módulo 01, DoS** *(muestra: Logs del 01)*
+
+> "Módulo uno: **ataque de denegación de servicio**. El script dispara **treinta peticiones HTTP simultáneas** contra la DMZ para intentar saturarla. En el log se ve la simulación corriendo, y en el log del cero, justo antes, se ve la ráfaga de peticiones llegando de golpe. Ese es el vector de ataque reflejado en la víctima."
+
+**▶ ESCENA 6 · 3:15–3:45 — Módulo 02, escaneo** *(muestra: Logs del 02)*
+
+> "Módulo dos: **escaneo de puertos** con `nc`. Se analizan los puertos 21, 22, 80, 443, 8080 y 3306. El resultado es el esperado en un entorno real: **443 y 80 responden `succeeded`, están abiertos**; los demás fallan, están **cerrados o filtrados**. Eso es reconocimiento: primero el atacante descubre qué tiene abierto la víctima."
+
+**▶ ESCENA 7 · 3:45–4:15 — Módulo 03, rutas** *(muestra: Logs del 03)*
+
+> "Módulo tres: **enumeración de rutas**. Se prueban rutas sensibles —`/admin`, `/config.php`, `/login`, `/secret`, `/backup.zip`— y se registra el código de respuesta de cada una. En el log del cero también aparecen esas peticiones entrando. Si alguna ruta devolviera 404, el atacante sabría que no existe; si devuelve 200, sigue ahí para explotarla."
+
+**▶ ESCENA 8 · 4:15–4:45 — Módulo 04, DNS** *(muestra: Logs del 04)*
+
+> "Módulo cuatro: **exfiltración por consultas DNS**. El dato sensible, `clave_secreta_banco_2026`, se codifica en **Base64** y se monta como subdominio de un dominio que controla el atacante. El servidor no ve nada sospechoso, pero **el dato salió en claro dentro de una consulta DNS**. Por eso la exfiltración DNS es tan difícil de detectar."
+
+**▶ ESCENA 9 · 4:45–5:10 — Módulo 05, cadena de suministro** *(muestra: Logs del 05)*
+
+> "Módulo cinco: **cadena de suministro**. Aquí el ataque no es de red, ocurre en la **construcción de la imagen**: una dependencia maliciosa se inyecta durante el build y se ejecuta con los privilegios del contenedor. El log lanza la alerta —`[ALERTA DE SEGURIDAD] dependencia no autorizada`— y muestra el payload corriendo. Es un vector puramente defensivo: verificar la integridad del artefacto."
+
+**▶ ESCENA 10 · 5:10–5:35 — Módulo 06, credentials** *(muestra: Logs del 06)*
+
+> "Módulo seis: **credential stuffing**. Se prueban cinco usuarios —admin, root, user, docente, gestor— con la clave `password123` usando cabecera **Authorization Basic**. Cada intento queda registrado con su código HTTP. Este es el ataque que más se ve en la vida real, y contra él se defiende con bloqueo por intentos y doble factor."
+
+**▶ ESCENA 11 · 5:35–6:30 — Módulo 07, MITM** ⚠️ *usa **Ctrl + U*** *(muestra: URL del 07 → Ctrl+U → Ctrl+F)*
+
+> "Y el módulo siete, el **proxy man-in-the-middle**. Lo primero: abro su URL y se ve **la página de la DMZ con mi nombre**, o sea, el proxy **interceptó y reenvió** la petición. Ahora, como la inyección es un **comentario HTML**, con Ctrl+F normal no aparece: presiono **Ctrl + U** para ver el código fuente, **Ctrl + F** y busco **ALERTA MITM**. Ahí está, resaltado al final: *'Este contenido fue alterado en tránsito por el Proxy Interceptor'*. El atacante modificó la respuesta en medio del recorrido."
+
+**▶ ESCENA 12 · 6:30–7:00 — Cierre** *(muestra: Dashboard con las 8 en verde + el PDF)*
+
+> "Para cerrar: los **ocho servicios desplegados, ejecutándose en la nube y con mis iniciales en cada URL**. El laboratorio quedó completo: un servidor víctima en la DMZ y siete vectores de ataque, cada uno evidenciado en sus registros de auditoría. Adjunto el **PDF con los logs** de cada una de las ejecuciones. Esto fue todo, gracias."
+
+---
+
+### ⏱️ Si te sobra tiempo, agrega estas ideas (sin pasarte de 7 min)
+
+- *"Render usa el plan gratuito, así que los servicios se duermen sin tráfico; el primer acceso tarda unos segundos en despertarlos."*
+- *"Todos los módulos corren en contenedores Docker: misma base, distinta herramienta."*
+- *"Lo que aprendí: un ataque no deja de ser tráfico legítimo mal usado — por eso los logs son la primera línea de defensa."*
+- *"La detección no está en impedir el ataque, sino en reconocer su firma en la auditoría."*
+
+### 📏 Reglas de grabación
+
 - Pantalla completa, mouse lento, **3 segundos de pausa** en cada cosa importante.
-- **Ctrl + `+`** para agrandar el navegador: las URLs y los logs **se tienen que leer** en el video.
 - Graba **de un tirón, sin cortes**. Si te pasas de 7 min, recorta pausas, nunca contenido.
-- No hace falta discurso memorizado: con nombrar el módulo y lo que muestra basta.
 - Si un servicio tarda en despertar, **espera a que cargue**, no lo saltes.
+- Si sale la página de **"Verificación de seguridad"** de Cloudflare: espera 1–3 min y recarga **una sola vez** (no le des F5 seguido; también sirve ventana incógnita `Ctrl + Shift + N`).
 
 ---
 
@@ -114,8 +165,9 @@ Son **8 pestañas distintas**, una por servicio:
 1. Con los 8 servicios ya verificados, captura cada log: **`Win + Shift + S`** (recorte) o `PrtSc`.
 2. En tu editor de imágenes/doc, pégalas en orden con un título: `01 - DoS`, `02 - Escaneo de puertos`…
 3. Incluye **portada** con la URL de la DMZ mostrando tu nombre.
-4. Exporta: **Ctrl + P → Destino → Guardar como PDF**.
-5. Súbelo a la plataforma junto con el video.
+4. Captura también el **código fuente del Módulo 07** (**`Ctrl + U`** → `Ctrl + F` → `ALERTA MITM` resaltado).
+5. Exporta: **Ctrl + P → Destino → Guardar como PDF**.
+6. Súbelo a la plataforma junto con el video.
 
 ---
 
@@ -129,6 +181,8 @@ Son **8 pestañas distintas**, una por servicio:
 | El log de un ataque salió vacío | Render limpió los logs en el último deploy | **Manual Deploy → Deploy latest commit** |
 | En el formulario aparece `Start Command` con `bundle exec puma` | Render no detectó Docker | Pone **Runtime: Docker** y verifica el **Root Directory** |
 | `nc: getaddrinfo failed` en el módulo 02 | El `HOST` tenía `https://` | Ya corregido en commit `01809d1` (vuelto al código original del gist) |
+| Aparece *"Verificación de seguridad en curso"* de Cloudflare | El antibot de Render se activa por muchas peticiones seguidas | Esperar 1–3 min y recargar **una sola vez**; o ventana incógnita `Ctrl + Shift + N` |
+| `Ctrl + F` no encuentra `ALERTA MITM` | Es un **comentario HTML**: no se pinta en la página | Abrir el código fuente con **`Ctrl + U`** y ahí sí buscar |
 
 ---
 
